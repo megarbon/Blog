@@ -1,0 +1,88 @@
+---
+title: JS Closures — Improve Performance
+date: "2023-11-07"
+tags: ["javascript", "features"]
+related:
+  - github-markdown-guide
+  - guide-to-using-images-in-nextjs
+draft: false
+summary: Use closures to create robust, scalable, and maintainable JavaScript applications
+---
+
+![Big O notation complexity chart from FreeCodeCamp](https://miro.medium.com/v2/resize:fit:720/format:webp/0*-X3WTV0a_eC_WEH0.jpeg)
+
+## When to Use Closure?
+
+Closures are best suited for scenarios where you need to retain access to certain values or variables beyond the lifespan of their original functions. They are particularly useful for:
+
+- Creating private variables and functions
+- Implementing partial function application
+- Preserving state in asynchronous code
+
+Utilize closures whenever you need to maintain the context of specific data within your functions.
+
+## Where and How to Use Closure?
+
+### Private Variables and Functions:
+
+```javascript
+const makeCounter = () => {
+  let count = 0;
+
+  return () => {
+    count++;
+    console.log(count);
+  };
+};
+
+let counter = makeCounter();
+counter(); // logs 1
+counter(); // logs 2
+counter(); // logs 3
+```
+
+This example demonstrates how closures can be used to create private variables, accessible only through specific functions. The `count` variable remains protected within the `makeCounter` scope, enabling secure data encapsulation.
+
+### Partial Function Application:
+
+```javascript
+function add(x) {
+  return function (y) {
+    return x + y;
+  };
+}
+
+let add5 = add(5);
+console.log(add5(3)); // 8
+```
+
+By using closures, you can partially apply functions, setting some of their arguments beforehand and producing specialized versions of the original function. This technique can streamline your code and simplify function usage.
+
+### Preserving States in Asynchronous Code:
+
+```javascript
+const animate = (element, from, to, duration) => {
+  let start = performance.now();
+
+  const update = () => {
+    let time = performance.now() - start;
+    let progress = time / duration;
+    let value = from + (to - from) * progress;
+
+    element.style.left = value + "px";
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    }
+  };
+
+  requestAnimationFrame(update);
+};
+
+let element = document.getElementById("my-element");
+animate(element, 0, 100, 1000);
+```
+
+Closures are valuable in asynchronous programming, where they can maintain the state of certain variables during asynchronous operations. This allows for smooth and controlled updates, such as in the provided animation example.
+
+Embracing closures can significantly enhance your JavaScript development skills, allowing for cleaner, more efficient, and more secure code. By leveraging closures effectively, you can create robust, scalable, and maintainable JavaScript applications.
